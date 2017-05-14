@@ -16,6 +16,7 @@ class checkIp
     public function handle($request, Closure $next , $authIp = [])
     {
         $ip = $request->ip();
+        $hostname = $request->getHost();
         if($ip != '127.0.0.1' && !in_array($ip, $authIp)){
             return response('not allowed to show this app');
         }

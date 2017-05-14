@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,3 +61,11 @@ Route::get('not_found', function(){
  * Controller
  */
 
+Route::any('needcontroller/{name?}', 'Page\pageController@index');
+Route::any('needview', 'Page\pageController@show');
+Route::resource('test', 'Page\testController');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

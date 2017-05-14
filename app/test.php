@@ -8,10 +8,9 @@ class test extends Model
 {
     
      public $table = 'test';
-    
+
     public $fillable = ['*'];
     
-
 
     public function  getRouteKeyName()
     {
