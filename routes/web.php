@@ -18,9 +18,11 @@ Route::get('/', function () {
 });
 
 
+/**
+ * Route & Middleware
+ */
 
-
-Route::group(['prefix' => 'formaland'], function(){
+Route::group(['prefix' => 'formaland', 'middleware' => 'ip' ], function(){
 
     Route::match(['get', 'put'],'/oppa', function(){
         return  'je suis la ';
@@ -45,4 +47,16 @@ Route::get('withmodel/{test}', function( App\test $test){
     $monTest = App\test::where('name', 'mon name')->get();
     dd($monTest);
 });
+
+Route::any('middleware', function(){
+    return response('test middleware pour une seule route');
+})->middleware('ip:["192.168.1.1", "192.168.1.2", "192.168.1.3"]');
+
+Route::get('not_found', function(){
+    return view('404');
+});
+
+/**
+ * Controller
+ */
 
