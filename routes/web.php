@@ -11,8 +11,28 @@
 |
 */
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Request;
+
+
+/*class test2{
+
+    private $ip;
+    public $uid;
+    public function __construct(string $ip)
+    {
+        $this->ip = $ip;
+        $this->uid = uniqid();
+    }
+}
+
+App::singleton('test2', function(){
+    $request = App::make('request');
+    $ip = $request->getClientIp();
+    return new test2($ip);
+});
+*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -69,3 +89,5 @@ Route::resource('test', 'Page\testController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/nothome', 'testController@nothome');
