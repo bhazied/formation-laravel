@@ -7,15 +7,13 @@ use Illuminate\Support\Facades\Response;
 
 class HomeController extends Controller
 {
-    private $test;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(\App\TestInterface $test)
+    public function __construct()
     {
-        $this->test = $test;
         $this->middleware('auth');
     }
 

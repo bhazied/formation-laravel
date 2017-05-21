@@ -90,4 +90,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/nothome', 'testController@nothome');
+Route::resource('annonces', 'AnnonceController');
+Route::resource('states', 'StateController');

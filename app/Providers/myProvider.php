@@ -27,13 +27,11 @@ class myProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(TestInterface::class, function(){
-            return new Test();
-        });
+
     }
 
     public function provides()
     {
-        return [TestInterface::class];
+       
     }
 }
