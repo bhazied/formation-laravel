@@ -13,6 +13,9 @@
                     <h1>{{ $annonce->title  }}</h1>
                     <p>{{ $annonce->description  }}</p>
                     <p><a class="btn bg-primary" href="{{ route('annonces.edit', $annonce->id)  }}"> Edit</a></p>
+                    {{Form::open(['method' => 'DELETE', 'route' => ['annonces.destroy', $annonce->id]])}}
+                    {!! Form::submit('delete', ['class' => 'btn bg-primary']) !!}
+                    {{Form::close()}}
                 </div>
             </div>
         @endforeach

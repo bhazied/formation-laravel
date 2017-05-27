@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Annonce;
 use App\Category;
+use App\Http\Requests\annonceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class AnnonceController extends Controller
@@ -17,7 +19,7 @@ class AnnonceController extends Controller
      */
     public function index()
     {
-        $annonces = Annonce::all();
+        $annonces = Annonce::valid()->get();
         return view('annonce.index', compact('annonces'));
     }
 
@@ -39,14 +41,20 @@ class AnnonceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(annonceRequest $request)
     {
+        /*$validator = Validator::make($request->all(), Annonce::$rules);
+        if($validator->fails()){
+            return redirect('/annonces/create')->withInput()->withErrors($validator);
+        }*/
         try{
-            $annonce =  Annonce::create($request->all());
+            $data = $request->all();
+            $data['creator_user_id'] = Auth::user()->id;
+            $annonce =  Annonce::create($data);
             Session::flash('success', 'insert success');
             return redirect('/annonces');
         } catch(\Exception $ex){
-            Session::flash('error', $ex->getMessage());
+            Session::flash('error', "impossible d'ajjouter une nouvelle annonce");
             return redirect('/annonces/create')->withInput();
         }
     }
@@ -70,7 +78,9 @@ class AnnonceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $annonce = Annonce::findOrFail($id);
+        $categories = Category::pluck('name', 'id')->all();
+        return view('annonce.edit', compact('annonce', 'categories'));
     }
 
     /**
@@ -82,7 +92,18 @@ class AnnonceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $data = $request->all();
+            unset($data['_token']);
+            unset($data['_method']);
+        Annonce::where('id',  $id)->update($data);
+        Session::flash('success', 'update success');
+        return redirect(route('annonces.index'));
+    }
+    catch (\Exception $ex){
+        Session::flash('error', 'update failed with some errors ');
+        return redirect(route('annonces.edit', ['id' => $id]));
+    }
     }
 
     /**
@@ -93,6 +114,8 @@ class AnnonceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Annonce::destroy($id);
+        Session::flash('success', 'delete success');
+        return redirect('/annonces');
     }
 }
