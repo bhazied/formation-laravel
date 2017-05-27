@@ -1,12 +1,12 @@
 @extends('layouts.app')
 <div class="container">
     @section('content')
-        @foreach($annonces as $annonce)
-            <div class="row">
-                <div class="col-md-4 pull-right">
-                    <a class="btn btn-primary" href="{{ route('annonces.create')  }}">Ajouter</a>
-                </div>
+        <div class="row">
+            <div class="col-md-4 pull-right">
+                <a class="btn btn-primary" href="{{ route('annonces.create')  }}">Ajouter</a>
             </div>
+        </div>
+        @foreach($annonces as $annonce)
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">

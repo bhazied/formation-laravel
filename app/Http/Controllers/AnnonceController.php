@@ -28,8 +28,9 @@ class AnnonceController extends Controller
      */
     public function create()
     {
-        $categories = Category::pluck('id', 'name')->all();
-        return view('annonce.create', compact('categories'));
+        $categories = Category::pluck('name', 'id')->all();
+        $annonce = new Annonce();
+        return view('annonce.create', compact('categories', 'annonce'));
     }
 
     /**
@@ -40,7 +41,14 @@ class AnnonceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $annonce =  Annonce::create($request->all());
+            Session::flash('success', 'insert success');
+            return redirect('/annonces');
+        } catch(\Exception $ex){
+            Session::flash('error', $ex->getMessage());
+            return redirect('/annonces/create')->withInput();
+        }
     }
 
     /**
