@@ -19,7 +19,8 @@ class AnnonceController extends Controller
      */
     public function index()
     {
-        $annonces = Annonce::valid()->get();
+        //$annonces = Annonce::valid()->get();
+        $annonces =  Annonce::all();
         return view('annonce.index', compact('annonces'));
     }
 
