@@ -13,7 +13,7 @@
             <div class="col-md-6">
                 <h1>{{ $state->name  }}</h1>
                 <p><a class="btn bg-primary" href="{{ route('states.edit', $state->id)  }}"> Edit</a></p>
-                {{Form::open(['method' => 'DELETE', 'route' => ['states.destroy', $state->id]])}}
+                {{Form::open(['method' => 'DELETE', 'route' => ['states.destroy', $state->id]]) }}
                 {!! Form::submit('delete', ['class' => 'btn bg-primary']) !!}
                 {{Form::close()}}
             </div>

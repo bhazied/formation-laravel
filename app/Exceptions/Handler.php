@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Response;
@@ -51,6 +52,9 @@ class Handler extends ExceptionHandler
                 return response()->json(['error' => 'not found.'], 404);
             }
             return redirect('not_found');
+        }
+        if($exception instanceof AuthorizationException){
+            return redirect('forbidden');
         }
         return parent::render($request, $exception);
     }

@@ -77,6 +77,10 @@ Route::get('not_found', function(){
     return view('404');
 });
 
+Route::get('forbidden', function(){
+    return view('403');
+});
+
 /**
  * Controller
  */
@@ -90,5 +94,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('annonces', 'AnnonceController');
 Route::resource('states', 'StateController');
+Route::group(['middleware' =>  ['auth'] ], function(){
+    Route::resource('users', 'UserController');
+    Route::resource('annonces', 'AnnonceController');
+});

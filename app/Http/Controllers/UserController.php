@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        //$this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::paginate(config('paginate.user'));
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -24,7 +33,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::pluck('name', 'id')->all();
+        $user = new User();
+        return view('user.create', compact('roles', 'user'));
     }
 
     /**
@@ -35,7 +46,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -57,7 +68,13 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        try{
+            return view('user.edit', compact('user'));
+        }
+        catch (\Exception $ex){
+            Session::flash('info', 'le state avec id '.$user->name.' non trouvable');
+            return redirect('/users');
+        }
     }
 
     /**
@@ -69,7 +86,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -80,6 +97,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
     }
 }

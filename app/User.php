@@ -27,7 +27,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
     public function annonces(){
         return $this->hasMany(Annonce::class);
+    }
+
+    public  function roles(){
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    public function hasRole($role){
+        $role = $this->roles->where('name', $role)->first();
+        if($role){
+            return true;
+        }
+        return false;
+    }
+
+    public function isSuperAdmin(){
+        return $this->hasRole('ROLE_SUPER_ADMIN');
     }
 }

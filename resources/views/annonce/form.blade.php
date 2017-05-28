@@ -40,7 +40,14 @@ $options = array_merge(['route' => ['annonces.store', $annonce->id], 'method' =>
     <div class="col-md-6">
         {!! Form::textarea('description', null, ['class' => 'form-control', 'placeholder' => 'annone description...']) !!}
     </div>
-
+    @can('update', $annonce->user)
+    <div class="form-group">
+        {!! Form::label('name', 'craretor user', ['class'=> 'col-md-4 control-label']) !!}
+        <div class="col-md-6">
+            {!! Form::select('creator_user_id', $users, null ,['class' => 'form-control', 'placeholder' => 'select User']) !!}
+        </div>
+    </div>
+    @endcan
 </div>
 {!! Form::submit('Add') !!}
 {{ Form::close()  }}

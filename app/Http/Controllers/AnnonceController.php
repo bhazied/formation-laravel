@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Annonce;
 use App\Category;
 use App\Http\Requests\annonceRequest;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -21,7 +23,8 @@ class AnnonceController extends Controller
     {
         //$annonces = Annonce::valid()->get();
         $annonces =  Annonce::all();
-        return view('annonce.index', compact('annonces'));
+        $annonce = new Annonce();
+        return view('annonce.index', compact('annonces', 'annonce'));
     }
 
     /**
@@ -80,8 +83,10 @@ class AnnonceController extends Controller
     public function edit($id)
     {
         $annonce = Annonce::findOrFail($id);
+        $this->authorize('update', $annonce);
         $categories = Category::pluck('name', 'id')->all();
-        return view('annonce.edit', compact('annonce', 'categories'));
+        $users = User::pluck('first_name', 'id')->all();
+        return view('annonce.edit', compact('annonce', 'categories', 'users'));
     }
 
     /**
@@ -115,7 +120,10 @@ class AnnonceController extends Controller
      */
     public function destroy($id)
     {
-        Annonce::destroy($id);
+        $annonce = Annonce::findOrFail($id);
+        $this->authorize('delete',$annonce);
+        //Annonce::destroy($id);
+        $annonce->delete();
         Session::flash('success', 'delete success');
         return redirect('/annonces');
     }
