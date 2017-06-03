@@ -99,3 +99,7 @@ Route::group(['middleware' =>  ['auth'] ], function(){
     Route::resource('users', 'UserController');
     Route::resource('annonces', 'AnnonceController');
 });
+
+/** confirm e-mail route **/
+
+Route::get('/confirm/{id}/{token}', 'Auth\RegisterController@confirm');

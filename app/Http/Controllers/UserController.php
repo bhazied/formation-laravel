@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -44,9 +45,25 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        dd($request);
+        try{
+            $role_ids = $request->get('roles');
+            $user = new User();
+            $user->first_name = $request->get('first_name');
+            $user->last_name = $request->get('last_name');
+            $user->username = $request->get('username');
+            $user->mobile = $request->get('mobile');
+            $user->email = $request->get('email');
+            $user->password = bcrypt($request->get('password'));
+            $user->save();
+            $user->roles()->sync($role_ids);
+
+            //$user = User::create($request->all());
+            return redirect(route('users.index'))->with('success' , 'user add with success');
+        }catch (\Exception $ex) {
+            return redirect(route('users.create'))->with('error', 'user not added')->withInput();
+        }
     }
 
     /**
@@ -69,7 +86,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         try{
-            return view('user.edit', compact('user'));
+            $roles = Role::pluck('name', 'id')->all();
+            return view('user.edit', compact('user', 'roles'));
         }
         catch (\Exception $ex){
             Session::flash('info', 'le state avec id '.$user->name.' non trouvable');
@@ -84,9 +102,23 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        dd($request);
+        try{
+            $role_ids = $request->get('roles');
+            $user->first_name = $request->get('first_name');
+            $user->last_name = $request->get('last_name');
+            $user->username = $request->get('username');
+            $user->mobile = $request->get('mobile');
+            $user->email = $request->get('email');
+            $user->save();
+            $user->roles()->sync($role_ids, false);
+
+            return redirect(route('users.index'))->with('success' , 'user add with success');
+        }catch (\Exception $ex) {
+            //return redirect(route('users.create'))->with('error', 'user not added');
+            return redirect(route('users.create'))->with('error', $ex->getMessage())->withInput();
+        }
     }
 
     /**
