@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -47,4 +48,28 @@ class User extends Authenticatable
     public function isSuperAdmin(){
         return $this->hasRole('ROLE_SUPER_ADMIN');
     }
+
+    public function getUsernameAttribute($value){ //get <attributeName> Attribute
+
+        return Str::upper($value);
+    }
+
+    public function setUsernameAttribute($value)  //set <attributeName> Attribute
+    {
+        $this->attributes['username'] = Str::upper($value);
+    }
+
+    public function getRoleListAttribute(){
+        $roles = '';
+        if($this->roles){
+            foreach ($this->roles as $role){
+                $roles .= ',' .$role->name;
+            }
+            return ltrim($roles, ',');
+        }
+        else {
+            return $roles = 'user without roles';
+        }
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\myEvent;
 use App\Http\Requests\UserRequest;
 use App\Role;
 use App\User;
@@ -130,5 +131,20 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+    }
+
+    public function toggle($id){
+       $user = User::find($id);
+        $user->is_enabled = !$user->is_enabled;
+        $user->save();
+        event(new myEvent($user));
+        if($user->is_enabled){
+            $message = "le compte est activé";
+        }
+        else {
+            $message = "le compte est disactiv&";
+        }
+        //return redirect()->back()>with('success', $message);
+        return redirect(route('users.index'))->with('success', $message);
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\myEvent;
+use App\Listeners\myEventListner;
+use App\Listeners\myEventListnerCustomEmail;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -12,9 +15,16 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
+    /*protected $listen = [
         'App\Events\Event' => [
             'App\Listeners\EventListener',
+        ],
+    ];*/
+
+    protected $listen = [
+        myEvent::class => [
+            myEventListner::class,
+            myEventListnerCustomEmail::class
         ],
     ];
 

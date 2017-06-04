@@ -97,6 +97,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('states', 'StateController');
 Route::group(['middleware' =>  ['auth'] ], function(){
     Route::resource('users', 'UserController');
+    Route::get('users/toggle/{id}', 'UserController@toggle')->name('users.toggle');
     Route::resource('annonces', 'AnnonceController');
 });
 

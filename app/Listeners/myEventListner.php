@@ -2,10 +2,12 @@
 
 namespace App\Listeners;
 
+use App\Events\myEvent;
+use App\Notifications\toggleStatus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EventListener
+class myEventListner
 {
     /**
      * Create the event listener.
@@ -20,11 +22,11 @@ class EventListener
     /**
      * Handle the event.
      *
-     * @param  Event  $event
+     * @param  myEvent  $event
      * @return void
      */
-    public function handle(Event $event)
+    public function handle(myEvent $event)
     {
-        //
+        $event->user->notify(new toggleStatus());
     }
 }

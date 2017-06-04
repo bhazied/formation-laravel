@@ -10,7 +10,7 @@ class userPolicy
     use HandlesAuthorization;
 
     public function before(User $user){
-        return $user->hasRole('ROLE_SUPER_ADMIN');
+        //return $user->hasRole('ROLE_SUPER_ADMIN');
     }
 
     /**
@@ -71,6 +71,12 @@ class userPolicy
      */
     public function delete(User $user, User $userObject)
     {
-        return $user->hasRole('ROLE_SUPER_ADMIN');
+        //return $user->hasRole('ROLE_SUPER_ADMIN');
+        return ($user->hasRole('ROLE_SUPER_ADMIN') && ($user->id != $userObject->id));
+    }
+
+    public function toggle(User $user, User $userObject)
+    {
+        return ($user->hasRole('ROLE_SUPER_ADMIN') && ($user->id != $userObject->id));
     }
 }

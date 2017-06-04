@@ -12,10 +12,15 @@
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <h1>{{ $user->first_name  }}</h1>
+                <p>{{ $user->username  }}</p>
+                <p>{{ $user->role_list  }}  </p>
                 <p><a class="btn bg-primary" href="{{ route('users.edit', $user->id)  }}"> Edit</a></p>
-                {{Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id]])}}
-                {!! Form::submit('delete', ['class' => 'btn bg-primary']) !!}
-                {{Form::close()}}
+                @can('toggle', $user)
+                    <p><a class="btn bg-primary" href="{{ route('users.toggle', $user->id)  }}"> toggle</a></p>
+                    {{Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id]])}}
+                    {!! Form::submit('delete', ['class' => 'btn bg-primary']) !!}
+                    {{Form::close()}}
+                @endcan
             </div>
         </div>
     @empty

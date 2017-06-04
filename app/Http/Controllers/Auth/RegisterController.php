@@ -56,7 +56,6 @@ class RegisterController extends Controller
         $user =  $this->create($request->all());
         event(new Registered($user));
         $user->notify(new userRegistred());
-        //$this->guard()->login($user);
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
